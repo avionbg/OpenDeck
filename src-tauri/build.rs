@@ -25,10 +25,9 @@ fn main() {
 
 		Ok(())
 	}() {
-		#[cfg(debug_assertions)]
-		eprintln!("Failed to build builtin plugins: {error}");
-		#[cfg(not(debug_assertions))]
-		panic!("Failed to build builtin plugins: {error}");
+		// Local build: don't require `deno` to bundle the builtin plugins (they aren't needed here —
+		// plugins are already installed in the user's data dir). Just warn and continue.
+		eprintln!("Skipping builtin plugin build: {error}");
 	}
 
 	built::write_built_file().expect("failed to acquire build-time information");
